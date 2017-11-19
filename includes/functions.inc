@@ -41,4 +41,8 @@ echoDeltaTime(){
         minutesText="${minutes} minutes and "
     fi
     echo "${daysText}${hoursText}${minutesText}${secondes} secondes"
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> f7b128f0da7f4f5c94fada70cac310fe6d8cac10
