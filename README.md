@@ -1,5 +1,4 @@
-# ITSL-VMBS
-# ITSL-VirtualMachineBackupsScripts
+# ITSL-VMBS - ITSL-Virtual Machine Backups Script
 
 Script for VMWare virtuals machine backups between 2 ESXi servers
 It pilot ghettoVCB scripts from an external server
