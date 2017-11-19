@@ -10,13 +10,17 @@
 #
 
 # Set start time
-STARTTIME=`date +%s --date="23 Dec 2016 10:38:15"`
+STARTTIME=`date +%s`
 
 # Define script path and include config and includes files
 SCRIPT_PATH=$(dirname $(readlink -f $0))
 
 source ${SCRIPT_PATH}/../conf/main.conf
 source ${SCRIPT_PATH}/../includes/functions.inc
+
+
+RED='\033[0;31m'
+NC='\033[0m' # No Color
 
 
 # Print variables values
@@ -45,7 +49,138 @@ echo "TARGET_DATASTORE1_PATH =>" ${TARGET_DATASTORE1_PATH}
 echo "TARGET_DATASTORE2_PATH =>" ${TARGET_DATASTORE2_PATH}
 echo ""
 
-ENDTIME=`date +%s --date="05 Jan 2017 21:30:28"`
+
+# Parameters control
+
+
+# Test to do
+
+# Intermediate temporary file ?
+TEMP_FILE="/tmp/rc.tmp"
+
+ssh ${SOURCE_USERNAME}@${SOURCE_ADDRESS} exit >>${TEMP_FILE} 2>&1
+if [[ $? -ne 0 ]] ; then {
+    echo -e "${RED}KO => CAN NOT LOGIN on ESXi server ${SOURCE_ADDRESS}.${NC}"
+    cat ${TEMP_FILE}
+}
+else {
+    SOURCE_SSH="OK"
+    echo "OK => SSH login successful on ESXi server ${SOURCE_ADDRESS}."
+}
+fi
+echo ""
+if [[ -f "${PPK_KEY_PATH}" ]] ; then {
+plink ${SOURCE_USERNAME}@${SOURCE_ADDRESS} -ssh -i ${PPK_KEY_PATH} ls . >>${TEMP_FILE} 2>&1
+    if [[ $? -ne 0 ]] ; then {
+        echo -e "${RED}KO => CAN NOT LOGIN on ESXi server ${SOURCE_ADDRESS}.${NC}"
+        cat ${TEMP_FILE}
+    }
+    else {
+        echo "OK => PLINK login successful on ESXi server ${SOURCE_ADDRESS}."
+	      SOURCE_PLINK="OK"
+    }
+    fi
+}
+else {
+    echo -e "${RED}KO => ppk key file ${PPK_KEY_PATH} NOT found !${NC}"
+}
+fi
+echo ""
+
+if [[ "${SOURCE_PLINK}" == "OK" ]] ; then {
+    if [[ -n "${SOURCE_DATASTORE1_PATH}" ]] ; then {
+        plink ${SOURCE_USERNAME}@${SOURCE_ADDRESS} -ssh -i ${PPK_KEY_PATH} ls ${SOURCE_DATASTORE1_PATH} >>${TEMP_FILE} 2>&1
+        if [[ $? -ne 0 ]] ; then {
+            echo -e "${RED}KO => CAN NOT FIND datastore1 ${SOURCE_DATASTORE1_PATH} on ESXi server ${SOURCE_ADDRESS}.${NC}"
+            cat ${TEMP_FILE}
+        }
+        else {
+            echo "OK => Datastore1 ${SOURCE_DATASTORE1_PATH} found on ESXi server ${SOURCE_ADDRESS}."
+        }
+        fi
+    }
+    else {
+        echo -e "${RED}KO => SOURCE_DATASTORE1_PATH must be filled !${NC}"
+    }
+    fi
+
+    if [[ -n "${SOURCE_DATASTORE2_PATH}" ]] ; then {
+        plink ${SOURCE_USERNAME}@${SOURCE_ADDRESS} -ssh -i ${PPK_KEY_PATH} ls ${SOURCE_DATASTORE2_PATH} >>${TEMP_FILE} 2>&1
+        if [[ $? -ne 0 ]] ; then {
+            echo -e "${RED}KO => CAN NOT FIND datastore2 ${SOURCE_DATASTORE2_PATH} on ESXi server ${SOURCE_ADDRESS}.${NC}"
+            cat ${TEMP_FILE}
+        }
+        else {
+            echo "OK => Datastore2 ${SOURCE_DATASTORE2_PATH} found on ESXi server ${SOURCE_ADDRESS}."
+        }
+        fi
+    }
+    else {
+        echo -e "${RED}KO => SOURCE_DATASTORE2_PATH must be filled !${NC}"
+    }
+    fi
+}
+fi
+echo ""
+
+
+ssh ${TARGET_USERNAME}@${SOURCE_ADDRESS} exit >>${TEMP_FILE} 2>&1
+if [[ $? -ne 0 ]] ; then {
+    echo -e "${RED}KO => CAN NOT LOGIN on ESXi server ${TARGET_ADDRESS}.${NC}"
+    cat ${TEMP_FILE}
+}
+else {
+    echo "OK => SSH login successful on ESXi server ${TARGET_ADDRESS}."
+}
+fi
+echo ""
+
+plink ${TARGET_USERNAME}@${TARGET_ADDRESS} -ssh -i ${PPK_KEY_PATH} ls . >>${TEMP_FILE} 2>&1
+if [[ $? -ne 0 ]] ; then {
+    echo -e "${RED}KO => CAN NOT LOGIN on ESXi server ${TARGET_ADDRESS}.${NC}"
+    cat ${TEMP_FILE}
+}
+else {
+    echo "OK => PLINK login successful on ESXi server ${TARGET_ADDRESS}."
+}
+fi
+echo ""
+
+if [[ -n "${TARGET_DATASTORE1_PATH}" ]] ; then {
+    plink ${TARGET_USERNAME}@${TARGET_ADDRESS} -ssh -i ${PPK_KEY_PATH} ls ${TARGET_DATASTORE1_PATH} >>${TEMP_FILE} 2>&1
+    if [[ $? -ne 0 ]] ; then {
+        echo -e "${RED}KO => CAN NOT FIND datastore1 ${TARGET_DATASTORE1_PATH} on ESXi server ${TARGET_ADDRESS}.${NC}"
+        cat ${TEMP_FILE}
+    }
+    else {
+        echo "OK => Datastore1 ${TARGET_DATASTORE1_PATH} found on ESXi server ${TARGET_ADDRESS}."
+    }
+    fi
+}
+else {
+    echo -e "${RED}KO => TARGET_DATASTORE1_PATH must be filled !${NC}"
+}
+fi
+
+if [[ -n "${TARGET_DATASTORE2_PATH}" ]] ; then {
+    plink ${TARGET_USERNAME}@${TARGET_ADDRESS} -ssh -i ${PPK_KEY_PATH} ls ${TARGET_DATASTORE2_PATH} >>${TEMP_FILE} 2>&1
+    if [[ $? -ne 0 ]] ; then {
+        echo -e "${RED}KO => CAN NOT FIND datastore2 ${TARGET_DATASTORE2_PATH} on ESXi server ${TARGET_ADDRESS}.${NC}"
+        cat ${TEMP_FILE}
+    }
+    else {
+        echo "OK => Datastore2 ${TARGET_DATASTORE2_PATH} found on ESXi server ${TARGET_ADDRESS}."
+    }
+    fi
+}
+else {
+    echo -e "${RED}KO => TARGET_DATASTORE2_PATH must be filled !${NC}"
+}
+fi
+echo ""
+
+
+ENDTIME=`date +%s`
 echo "Duration: $(echoDeltaTime $STARTTIME $ENDTIME)"
 echo "========================================================="
 
