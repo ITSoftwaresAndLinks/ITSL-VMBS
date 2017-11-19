@@ -9,4 +9,4 @@ This script pilots ghettoVCB scripts from an external server.
 
 ### ESXi source server
 
-### ESXi destination server
+### ESXi target server
