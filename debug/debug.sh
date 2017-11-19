@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 #
 # ITSL-VMBS - Virtual Machine Backups Scripts
 # Purpose:           debug and tests
