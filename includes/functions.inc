@@ -22,29 +22,27 @@ echoNowTime(){
 # Usage echoDeltaTime $STARTTIME $ENDTIME
 #
 # Return :
-# delta in human readable format
+# Duration in human readable format
 
 echoDeltaTime(){
 	deltaTime=$(( $2-$1 ))
-	seconds=$(($deltaTime % 60))
+	secondes=$(($deltaTime % 60))
 	deltaTime=$(($deltaTime / 60))
 	minutes=$(($deltaTime % 60))
 	deltaTime=$(( ($deltaTime - $minutes) / 60 ))
 	hours=$(($deltaTime % 24))
 	days=$(( ($deltaTime - $hours) / 24 ))
 
-	if [[ "$days" !eq 0 ]] ; then
-		result= "$days days, $result"
-	fi
-	if [[ "$hours" !eq 0 ]] ; then
-		result= "$hours hours, $result"
-	fi
-	if [[ "$minutes" !eq 0 ]] ; then
-		result= "$minutes minutes and $result"
-	fi
-	result= "$result $seconds seconds"
-
-	echo "$result"
+  if [[ "$days" -gt 0 ]] ; then
+    daysText= $days " days, "
+  fi
+  if [[ "$hours" -gt 0 ]] ; then
+    hoursText= $hours " hours, "
+  fi
+  if [[ "$minutes" -gt 0 ]] ; then
+    minutesText= $minutes " minutes and "
+  fi
+  echo "$daysText$hoursText$minutesText$secondes secondes"
 }
 
-
+exit 0
