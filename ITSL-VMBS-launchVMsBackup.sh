@@ -6,9 +6,12 @@
 # Authors:           jurij.acalinovic@itsl.lu
 #                    boris.acalinovic@gmail.com
 #
-VERSION=0.0.1
-SUBJECT="ITSL-VMBS-launchVMsBackup"
-USAGE="Usage: ./ITSL-VMBS-launchVMsBackup.sh -ifdhv args"
+
+# Define script path and include config and includes files
+SCRIPT_PATH=$(dirname $(readlink -f $0))
+
+source ${SCRIPT_PATH}/conf/main.conf
+source ${SCRIPT_PATH}/includes/functions.inc
 
 #
 # OPTIONS PROCESSING
