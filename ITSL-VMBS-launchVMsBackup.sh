@@ -11,6 +11,7 @@
 SCRIPT_PATH=$(dirname $(readlink -f $0))
 
 source ${SCRIPT_PATH}/conf/main.conf
+source ${SCRIPT_PATH}/conf/local.conf
 source ${SCRIPT_PATH}/includes/functions.inc
 
 #
