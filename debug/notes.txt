@@ -1,0 +1,33 @@
+#
+#
+# ITSL-VMBS - Virtual Machine Backups Scripts
+# Purpose:           notes of dev.
+#
+# Authors:           jurij.acalinovic@itsl.lu
+#                    boris.acalinovic@gmail.com
+#
+
+#
+# OPTION PROCESSING HANDLING
+# ==================================================================================================================== #
+https://stackoverflow.com/questions/14008125/shell-script-common-template
+
+#
+# ERROR HANDLING
+# ==================================================================================================================== #
+
+${errorState}: 0 = No error
+               1 = Warning, script continues
+               2 = Critical, script halts
+
+#
+# LOGS HANDLING
+# ==================================================================================================================== #
+
+
+#
+# EMAIL AND SMS HANDLING
+# ==================================================================================================================== #
+http://blog.soutade.fr/post/2013/02/notification-par-sms.html
+
+        HEAD ${WEB_TEST_TARGET} | grep "404" >/dev/null
