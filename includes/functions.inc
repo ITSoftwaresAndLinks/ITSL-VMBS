@@ -57,6 +57,18 @@ echoDeltaTime(){
 # ERROR HANDLING
 # ==================================================================================================================== #
 
+# Verify if parameter is filled
+# -------------------------------------------------------------------------------------------------------------------- #
+# Parameters:       $PARAMETER
+#
+# Usage:            ...
+#
+# Return:           ...
+#
+paramIsFilled(){
+    
+}
+
 #
 # EMAIL HANDLING
 # ==================================================================================================================== #
@@ -74,9 +86,14 @@ echoDeltaTime(){
 # Return:           ????
 #
 sendSms(){
-    request="${OVH_SMS_BASE_URL}?account=${OVH_SMS_ACCOUNT}&login=${OVH_SMS_LOGIN}&password=${OVH_SMS_PASSWORD}&from=${OVH_SMS_FROM}&to=${OVH_SMS_TO}&message=${1}&noStop=1"
+    request="${OVH_SMS_BASE_URL}?account=${OVH_SMS_ACCOUNT}&login=${OVH_SMS_LOGIN}&password=${OVH_SMS_PASSWORD}\
+    &from=${OVH_SMS_FROM}&to=${OVH_SMS_TO}&message=${1}&noStop=1"
+        
+    if ( [[ ${SMS_ON_ERROR} == 2 ]] && [[ ${errorLevel} == 2  ]] ) || ( [[ ${SMS_ON_ERROR} == 1 ]] && \
+    ( [[ ${errorLevel} == 1  ]] || [[ ${errorLevel} == 2  ]] ) ) ; then {
 
-    GET "${request}"
+        GET "${request}"
+    }
 }
 
 

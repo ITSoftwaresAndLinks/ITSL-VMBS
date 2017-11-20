@@ -16,7 +16,7 @@ https://stackoverflow.com/questions/14008125/shell-script-common-template
 # ERROR HANDLING
 # ==================================================================================================================== #
 
-${errorState}: 0 = No error
+${errorLevel}: 0 = No error
                1 = Warning, script continues
                2 = Critical, script halts
 

@@ -26,16 +26,16 @@ while getopts ":l:vh" optname
   do
     case "$optname" in
       "v")
-        echo "ITSL-VMBS - Virtual Machine Backups Scripts"
+        echo "${SCRIPT_NAME}"
         echo "Version ${VERSION}"
         exit 0;
         ;;
       "l")
-        echo "ITSL-VMBS - Virtual Machine Backups Scripts"
+        echo "${SCRIPT_NAME}"
         echo "-l argument: ${OPTARG}"
         ;;
       "h")
-        echo "ITSL-VMBS - Virtual Machine Backups Scripts"
+        echo "${SCRIPT_NAME}"
         echo ${USAGE}
         echo "    -v:    Show version"
         echo "    -i:    List of VMs"
@@ -44,18 +44,18 @@ while getopts ":l:vh" optname
         exit 0;
         ;;
       "?")
-        echo "ITSL-VMBS - Virtual Machine Backups Scripts"
-        echo "Unknown option ${OPTARG}"
+        echo "${SCRIPT_NAME}"
+        echo -e "${RED}Unknown option ${OPTARG}${STD}"
         exit 0;
         ;;
       ":")
-        echo "ITSL-VMBS - Virtual Machine Backups Scripts"
-        echo "No argument value for option ${OPTARG}"
+        echo "${SCRIPT_NAME}"
+        echo -e "${RED}No argument value for option ${OPTARG}${STD}"
         exit 0;
         ;;
       *)
-        echo "ITSL-VMBS - Virtual Machine Backups Scripts"
-        echo "Unknown error while processing options"
+        echo "${SCRIPT_NAME}"
+        echo -e "${RED}Unknown error while processing options${STD}"
         exit 0;
         ;;
     esac
@@ -67,19 +67,27 @@ param1=$1
 param2=$2
 
 #
-# LOCKS
+# LOCK
 # ==================================================================================================================== #
-LOCK_FILE=/tmp/$SUBJECT.lock
+LOCK_FILE=/tmp/${SUBJECT}.lock
 if [ -f "{$LOCK_FILE}" ]; then
-   echo "Script is already running"
+   echo -e "${RED}Script is already running${STD}"
    exit
 fi
 
-trap "rm -f ${LOCK_FILE}" EXIT
-touch ${LOCK_FILE}
+
 
 #
 # SCRIPT LOGIC
 # ==================================================================================================================== #
+
+
+
+
+#
+# UNLOCK
+# ==================================================================================================================== #
+trap "rm -f ${LOCK_FILE}" EXIT
+touch ${LOCK_FILE}
 
 exit 0
