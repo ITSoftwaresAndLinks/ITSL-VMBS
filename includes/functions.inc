@@ -5,23 +5,33 @@
 # Authors:           jurij.acalinovic@itsl.lu
 #                    boris.acalinovic@gmail.com
 #
-# Version:           0.0.1 -
-#
 
-#                                                 #
-# DATE AND TIME FUNCTIONS
-# =============================================== #
+
+#
+# DATE AND TIME HANDLING
+# ==================================================================================================================== #
+
+# Print actual date and time in human readable format
+# -------------------------------------------------------------------------------------------------------------------- #
+# Parameters :       N/A
+#
+# Usage:             echoNowTime
+#
+# Return:            Now in human readable format
+#
 echoNowTime(){
     echo "$(date +%Y-%m-%d) $(date +%H:%M:%S)"
 }
 
-# Parameters :
+# Print duration in human readable format
+# -------------------------------------------------------------------------------------------------------------------- #
+# Parameters:       $STARTTIME
+#                   $ENDTIME
 #
-# Usage echoDeltaTime $STARTTIME $ENDTIME
+# Usage:            echoDeltaTime $STARTTIME $ENDTIME
 #
-# Return :
-# Duration in human readable format
-
+# Return:           Duration in human readable format
+#
 echoDeltaTime(){
     deltaTime=$(( ${2} - ${1} ))
     secondes=$(( ${deltaTime} % 60 ))
@@ -41,4 +51,47 @@ echoDeltaTime(){
         minutesText="${minutes} minutes and "
     fi
     echo "${daysText}${hoursText}${minutesText}${secondes} secondes"
+}
+
+#
+# ERROR HANDLING
+# ==================================================================================================================== #
+
+#
+# EMAIL HANDLING
+# ==================================================================================================================== #
+
+#
+# SMS HANDLING
+# ==================================================================================================================== #
+
+# Send SMS via OVH
+# -------------------------------------------------------------------------------------------------------------------- #
+# Parameters:       $SMS_MESSAGE
+#
+# Usage:            sendSms $SMS_MESSAGE
+#
+# Return:           ????
+#
+sendSms(){
+    request="${OVH_SMS_BASE_URL}?account=${OVH_SMS_ACCOUNT}&login=${OVH_SMS_LOGIN}&password=${OVH_SMS_PASSWORD}&from=${OVH_SMS_FROM}&to=${OVH_SMS_TO}&message=${1}&noStop=1"
+
+    GET "${request}"
+}
+
+
+
+
+
+
+# What function wil do
+# -------------------------------------------------------------------------------------------------------------------- #
+# Parameters:       N/A
+#
+# Usage:            ...
+#
+# Return:           ...
+#
+functionName(){
+    
 }
