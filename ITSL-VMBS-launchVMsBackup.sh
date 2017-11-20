@@ -6,13 +6,11 @@
 # Authors:           jurij.acalinovic@itsl.lu
 #                    boris.acalinovic@gmail.com
 #
-
 VERSION=0.0.1
 SUBJECT="ITSL-VMBS-launchVMsBackup"
 USAGE="Usage: ./ITSL-VMBS-launchVMsBackup.sh -ifdhv args"
 
-# https://stackoverflow.com/questions/14008125/shell-script-common-template
-
+#
 # OPTIONS PROCESSING
 # ==================================================================================================================== #
 if [ $# == 0 ] ; then
@@ -64,6 +62,7 @@ shift $((${OPTIND} - 1))
 param1=$1
 param2=$2
 
+#
 # LOCKS
 # ==================================================================================================================== #
 LOCK_FILE=/tmp/$SUBJECT.lock
@@ -75,6 +74,7 @@ fi
 trap "rm -f ${LOCK_FILE}" EXIT
 touch ${LOCK_FILE}
 
+#
 # SCRIPT LOGIC
 # ==================================================================================================================== #
 
