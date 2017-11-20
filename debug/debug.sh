@@ -18,6 +18,7 @@ source ${SCRIPT_PATH}/../includes/functions.inc
 
 # Set start time
 STARTTIME=`date +%s`
+sleep 1
 
 
 # Print variables values
@@ -25,7 +26,7 @@ STARTTIME=`date +%s`
 echo "========================================================="
 echo "     DEBUG MODE FOR $HOSTNAME - NOTHING WILL BE DONE"
 echo "========================================================="
-echo "date and time          =>" $(echoNowTime)
+echo "Started at             =>" $(echoNowTime)
 echo "SCRIPT_PATH            =>" ${SCRIPT_PATH}
 echo ""
 echo -e "${RED}Red ${YEL}Yellow ${GRE}Green ${BLU}Blue ${STD}Standard"
@@ -60,14 +61,20 @@ TEMP_FILE="/tmp/rc.tmp"
 #
 # ESXi SOURCE PARAMETERS
 # ==================================================================================================================== #
-ssh ${SOURCE_USERNAME}@${SOURCE_ADDRESS} exit >>${TEMP_FILE} 2>&1
-if [[ $? -ne 0 ]] ; then {
-    echo -e "${RED}KO => CAN NOT LOGIN on ESXi server ${SOURCE_ADDRESS}.${STD}"
-    cat ${TEMP_FILE}
+if [[ -n "${SOURCE_USERNAME}" || -n "${SOURCE_ADDRESS}" ]] ; then {
+    ssh ${SOURCE_USERNAME}@${SOURCE_ADDRESS} exit >>${TEMP_FILE} 2>&1
+    if [[ $? -ne 0 ]] ; then {
+        echo -e "${RED}KO => CAN NOT LOGIN on ESXi server ${SOURCE_ADDRESS}.${STD}"
+        cat ${TEMP_FILE}
+    }
+    else {
+        SOURCE_SSH="OK"
+        echo "OK => SSH login successful on ESXi server ${SOURCE_ADDRESS}."
+    }
+    fi
 }
 else {
-    SOURCE_SSH="OK"
-    echo "OK => SSH login successful on ESXi server ${SOURCE_ADDRESS}."
+    echo -e "${RED}KO => SOURCE_USERNAME and SOURCE_ADDRESS must be filled !${STD}"
 }
 fi
 
@@ -133,13 +140,20 @@ echo ""
 #
 # ESXi TARGET PARAMETERS
 # ==================================================================================================================== #
-ssh ${TARGET_USERNAME}@${TARGET_ADDRESS} exit >>${TEMP_FILE} 2>&1
-if [[ $? -ne 0 ]] ; then {
-    echo -e "${RED}KO => CAN NOT LOGIN on ESXi server ${TARGET_ADDRESS}.${STD}"
-    cat ${TEMP_FILE}
+if [[ -n "${TARGET_USERNAME}" || -n "${TARGET_ADDRESS}" ]] ; then {
+
+    ssh ${TARGET_USERNAME}@${TARGET_ADDRESS} exit >>${TEMP_FILE} 2>&1
+    if [[ $? -ne 0 ]] ; then {
+        echo -e "${RED}KO => CAN NOT LOGIN on ESXi server ${TARGET_ADDRESS}.${STD}"
+        cat ${TEMP_FILE}
+    }
+    else {
+        echo "OK => SSH login successful on ESXi server ${TARGET_ADDRESS}."
+    }
+    fi
 }
 else {
-    echo "OK => SSH login successful on ESXi server ${TARGET_ADDRESS}."
+    echo -e "${RED}KO => TARGET_USERNAME and TARGET_ADDRESS must be filled !${STD}"
 }
 fi
 

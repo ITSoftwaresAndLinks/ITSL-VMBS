@@ -37,7 +37,7 @@ echoDeltaTime(){
     secondes=$(( ${deltaTime} % 60 ))
     deltaTime=$(( ${deltaTime} / 60 ))
     minutes=$(( ${deltaTime} % 60 ))
-    deltaTime=$(( (${deltaTime} - {$minutes}) / 60 ))
+    deltaTime=$(( (${deltaTime} - ${minutes}) / 60 ))
     hours=$(( ${deltaTime} % 24 ))
     days=$(( (${deltaTime} - ${hours}) / 24 ))
 
@@ -65,9 +65,7 @@ echoDeltaTime(){
 #
 # Return:           ...
 #
-paramIsFilled(){
-    
-}
+
 
 #
 # EMAIL HANDLING
@@ -86,14 +84,12 @@ paramIsFilled(){
 # Return:           ????
 #
 sendSms(){
-    request="${OVH_SMS_BASE_URL}?account=${OVH_SMS_ACCOUNT}&login=${OVH_SMS_LOGIN}&password=${OVH_SMS_PASSWORD}\
-    &from=${OVH_SMS_FROM}&to=${OVH_SMS_TO}&message=${1}&noStop=1"
+    request="${OVH_SMS_BASE_URL}?account=${OVH_SMS_ACCOUNT}&login=${OVH_SMS_LOGIN}&password=${OVH_SMS_PASSWORD}&from=${OVH_SMS_FROM}&to=${OVH_SMS_TO}&message=${1}&noStop=1"
         
-    if ( [[ ${SMS_ON_ERROR} == 2 ]] && [[ ${errorLevel} == 2  ]] ) || ( [[ ${SMS_ON_ERROR} == 1 ]] && \
-    ( [[ ${errorLevel} == 1  ]] || [[ ${errorLevel} == 2  ]] ) ) ; then {
+#    if ( [[ ${SMS_ON_ERROR} == 2 ]] && [[ ${errorLevel} == 2  ]] ) || ( [[ ${SMS_ON_ERROR} == 1 ]] && ( [[ ${errorLevel} == 1  ]] || [[ ${errorLevel} == 2  ]] ) ) ; then {
 
-        GET "${request}"
-    }
+#        GET "${request}"
+#    }
 }
 
 
@@ -109,6 +105,3 @@ sendSms(){
 #
 # Return:           ...
 #
-functionName(){
-    
-}

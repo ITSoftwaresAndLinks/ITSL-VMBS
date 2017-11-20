@@ -18,7 +18,9 @@ source ${SCRIPT_PATH}/includes/functions.inc
 # OPTIONS PROCESSING
 # ==================================================================================================================== #
 if [ $# == 0 ] ; then
-    echo ${USAGE}
+    echo ""
+    echo "${SCRIPT_NAME}"
+    echo "        ${USAGE}"
     exit 1;
 fi
 
@@ -26,36 +28,42 @@ while getopts ":l:vh" optname
   do
     case "$optname" in
       "v")
+        echo ""
         echo "${SCRIPT_NAME}"
-        echo "Version ${VERSION}"
+        echo "        Version ${VERSION}"
         exit 0;
         ;;
       "l")
+        echo ""
         echo "${SCRIPT_NAME}"
-        echo "-l argument: ${OPTARG}"
+        echo "        -l argument: ${OPTARG}"
         ;;
       "h")
+        echo ""
         echo "${SCRIPT_NAME}"
-        echo ${USAGE}
-        echo "    -v:    Show version"
-        echo "    -i:    List of VMs"
-        echo "    -f:    Run in fake mode"
-        echo "    -d:    Run in debug mode"
+        echo "        ${USAGE}"
+        echo "        -v:    Show version"
+        echo "        -i:    List of VMs"
+        echo "        -f:    Run in fake mode"
+        echo "        -d:    Run in debug mode"
         exit 0;
         ;;
       "?")
+        echo ""
         echo "${SCRIPT_NAME}"
-        echo -e "${RED}Unknown option ${OPTARG}${STD}"
+        echo -e "${RED}        Unknown option ${OPTARG}${STD}"
         exit 0;
         ;;
       ":")
+        echo ""
         echo "${SCRIPT_NAME}"
-        echo -e "${RED}No argument value for option ${OPTARG}${STD}"
+        echo -e "${RED}        No argument value for option ${OPTARG}${STD}"
         exit 0;
         ;;
       *)
+        echo ""
         echo "${SCRIPT_NAME}"
-        echo -e "${RED}Unknown error while processing options${STD}"
+        echo -e "${RED}        Unknown error while processing options${STD}"
         exit 0;
         ;;
     esac
@@ -71,7 +79,7 @@ param2=$2
 # ==================================================================================================================== #
 LOCK_FILE=/tmp/${SUBJECT}.lock
 if [ -f "{$LOCK_FILE}" ]; then
-   echo -e "${RED}Script is already running${STD}"
+   echo -e "${RED}        Script is already running${STD}"
    exit
 fi
 
