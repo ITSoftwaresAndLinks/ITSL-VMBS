@@ -18,7 +18,6 @@ source ${SCRIPT_PATH}/../includes/functions.inc
 
 # Set start time
 STARTTIME=`date +%s`
-sleep 1
 
 
 # Print variables values
@@ -48,7 +47,6 @@ echo "TARGET_USERNAME        =>" ${TARGET_USERNAME}
 echo "TARGET_DATASTORE1_PATH =>" ${TARGET_DATASTORE1_PATH}
 echo "TARGET_DATASTORE2_PATH =>" ${TARGET_DATASTORE2_PATH}
 echo ""
-
 
 # Parameters control
 

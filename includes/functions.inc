@@ -77,6 +77,30 @@ echoDeltaTime(){
 
 # Send SMS via OVH
 # -------------------------------------------------------------------------------------------------------------------- #
+
+# Parameters:       $MESSAGE
+#
+# Usage:            $(urlencode "${SMS_MESSAGE}")
+#
+# Return:           raw url encoded text
+#
+urlencode() {
+  local string="${1}"
+  local strlen=${#string}
+  local encoded=""
+  local pos c o
+
+  for (( pos=0 ; pos<strlen ; pos++ )); do
+     c=${string:$pos:1}
+     case "$c" in
+        [-_.~a-zA-Z0-9] ) o="${c}" ;;
+        * )               printf -v o '%%%02x' "'$c"
+     esac
+     encoded+="${o}"
+  done
+  echo "${encoded}"
+}
+
 # Parameters:       $SMS_MESSAGE
 #
 # Usage:            sendSms $SMS_MESSAGE
@@ -84,12 +108,13 @@ echoDeltaTime(){
 # Return:           ????
 #
 sendSms(){
-    request="${OVH_SMS_BASE_URL}?account=${OVH_SMS_ACCOUNT}&login=${OVH_SMS_LOGIN}&password=${OVH_SMS_PASSWORD}&from=${OVH_SMS_FROM}&to=${OVH_SMS_TO}&message=${1}&noStop=1"
-        
-#    if ( [[ ${SMS_ON_ERROR} == 2 ]] && [[ ${errorLevel} == 2  ]] ) || ( [[ ${SMS_ON_ERROR} == 1 ]] && ( [[ ${errorLevel} == 1  ]] || [[ ${errorLevel} == 2  ]] ) ) ; then {
+    local request="${OVH_SMS_BASE_URL}?account=${OVH_SMS_ACCOUNT}&login=${OVH_SMS_LOGIN}&password=${OVH_SMS_PASSWORD}&from=${OVH_SMS_FROM}&to=${OVH_SMS_TO}&message=$(urlencode "${1}")&noStop=1"
 
-#        GET "${request}"
-#    }
+    if [[ ( ${SMS_ON_ERROR} == 2 && ${errorLevel} == 2 ) || ( ${SMS_ON_ERROR} == 1 && ${errorLevel} == 1 ) || ( ${SMS_ON_ERROR} == 1 && ${errorLevel} == 2 ) ]] ; then {
+        result=$(wget ${request} -q -O -)
+        echo $result
+    }
+    fi
 }
 
 
